@@ -1,5 +1,4 @@
-void read_ultrasonic()
-{
+void read_ultrasonic() {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
 

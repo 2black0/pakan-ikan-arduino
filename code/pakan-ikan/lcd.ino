@@ -1,7 +1,5 @@
-void lcd_show(int clear, int lines, String text, int timedelay)
-{
-  if (clear)
-  {
+void lcd_show(int clear, int lines, String text, int timedelay) {
+  if (clear) {
     lcd.clear();
   }
   lcd.setCursor(0, lines);

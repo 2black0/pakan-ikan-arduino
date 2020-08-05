@@ -1,5 +1,4 @@
-void getDT()
-{
+void getDT() {
   now = RTC.now();
 
   year = now.year(), DEC;

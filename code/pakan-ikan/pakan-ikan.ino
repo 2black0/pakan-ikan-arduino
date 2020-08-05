@@ -1,7 +1,7 @@
-#include <LiquidCrystal_I2C.h>
-#include <Wire.h>
 #include "RTClib.h"
+#include <LiquidCrystal_I2C.h>
 #include <Servo.h>
+#include <Wire.h>
 
 const int ldrPin = A0;
 const int pHPin = A1;
@@ -27,14 +27,16 @@ String data;
 long duration;
 int distance;
 
+bool feedStatus = false;
+int feedHour = 9;
+
 DateTime now;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 RTC_DS1307 RTC;
 Servo servoS;
 
-void init_pin()
-{
+void init_pin() {
   pinMode(ldrPin, INPUT);
   pinMode(pHPin, INPUT);
   pinMode(relay1Pin, OUTPUT);
@@ -45,16 +47,14 @@ void init_pin()
   servoS.attach(servoPin, 600, 2300);
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(4800);
   lcd.init();
   Wire.begin();
   RTC.begin();
   init_pin();
 
-  if (!RTC.isrunning())
-  {
+  if (!RTC.isrunning()) {
     lcd_show(1, 0, "RTC not Run!", 500);
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
@@ -64,6 +64,20 @@ void setup()
   lcd_show(0, 1, "Arduino Uno", 1000);
 }
 
-void loop()
-{
+void loop() {
+  getDT();
+  if (hour == feedHour && feedStatus == false) {
+    feedStatus = true;
+  }
+  if (hour != feedHour && feedStatus == true) {
+    feedStatus = false;
+  }
+
+  if (feedStatus) {
+    lcd_show(1, 0, "Kasih Makan!", 1);
+    servo_on();
+    send_sms();
+    buzzer_on(2000);
+    servo_off();
+  }
 }

@@ -1,5 +1,4 @@
-void read_ldr()
-{
+void read_ldr() {
   ldrVal = analogRead(ldrPin);
   delay(5);
 }
