@@ -1,4 +1,4 @@
-void send_sms(String text) {
+void sendSMS(String text) {
   Serial.println("AT");
   // updateSerial();
   Serial.println("AT+CMGF=1");

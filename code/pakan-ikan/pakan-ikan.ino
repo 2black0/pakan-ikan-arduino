@@ -111,6 +111,9 @@ void loop() {
   if (ldrVal < turbidWater && pHVal > pHWater) {
     dirtyStatus = false;
     lcdSHOW(1, 0, "Ganti Air!", 1);
+    relayON();
+    delay(180000);
+    relayOFF();
   }
   if ((ldrVal >= turbidWater || pHVal <= pHWater) && (dirtyStatus == true)) {
     dirtyStatus = true;

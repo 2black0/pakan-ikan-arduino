@@ -1,6 +1,6 @@
 int readLDR() {
-  int ldrVal;
-  ldrVal = analogRead(ldrPin);
+  int sldrVal;
+  sldrVal = analogRead(ldrPin);
   delay(5);
-  return (ldrVal);
+  return (sldrVal);
 }
