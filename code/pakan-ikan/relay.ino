@@ -1,10 +1,10 @@
-void relay_on() {
+void relayON() {
   digitalWrite(relay1Pin, LOW);
   digitalWrite(relay2Pin, LOW);
   delay(10);
 }
 
-void relay_off() {
+void relayOFF() {
   digitalWrite(relay1Pin, HIGH);
   digitalWrite(relay2Pin, HIGH);
   delay(10);
