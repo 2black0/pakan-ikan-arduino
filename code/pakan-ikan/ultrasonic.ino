@@ -1,4 +1,7 @@
-void read_ultrasonic() {
+int readUltrasonic() {
+  long duration = 0;
+  int distance = 0;
+
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
 
@@ -8,4 +11,5 @@ void read_ultrasonic() {
 
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 0.034 / 2;
+  return distance;
 }

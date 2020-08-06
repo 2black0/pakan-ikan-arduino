@@ -1,5 +1,9 @@
-void buzzer_on(int timedelay) {
+void buzON() {
   digitalWrite(buzPin, LOW);
-  delay(timedelay);
+  delay(10);
+}
+
+void buzOFF() {
   digitalWrite(buzPin, HIGH);
+  delay(10);
 }

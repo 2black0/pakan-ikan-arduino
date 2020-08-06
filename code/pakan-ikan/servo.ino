@@ -1,9 +1,9 @@
-void servo_on() {
+void servoON() {
   servoS.write(90);
-  delay(250);
+  delay(100);
 }
 
-void servo_off() {
+void servoOFF() {
   servoS.write(180);
-  delay(250);
+  delay(100);
 }

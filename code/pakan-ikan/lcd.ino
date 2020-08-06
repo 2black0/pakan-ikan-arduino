@@ -1,4 +1,4 @@
-void lcd_show(int clear, int lines, String text, int timedelay) {
+void lcdSHOW(int clear, int lines, String text, int timedelay) {
   if (clear) {
     lcd.clear();
   }

@@ -12,6 +12,13 @@ const int trigPin = 6;
 const int echoPin = 7;
 const int servoPin = 8;
 
+// parameter change with yours
+String noHP = "\"+628123456789\""; // ganti no hp penerima
+int pfeedDis = 30;                 // ganti jarak minimal pakan kosong (cm)
+int feedHour = 9;                  // ganti mau jam brp dikasih makan
+int turbidWater = 512;             // ganti dengan nilai kekeruhan maksimal
+int pHWater = 8;                   // ganti dengan nilai ph minimal
+
 int ldrVal = 0;
 int pHVal = 0;
 
@@ -22,13 +29,11 @@ String hour;
 String minute;
 String second;
 
-String data;
-
-long duration;
-int distance;
-
 bool feedStatus = false;
-int feedHour = 9;
+bool emptyStatus = false;
+bool dirtyStatus = false;
+
+int feedDis = 0;
 
 DateTime now;
 
@@ -65,19 +70,50 @@ void setup() {
 }
 
 void loop() {
-  getDT();
+
+  // program pakan ikan tiap jam tertentu
+  now = RTC.now();
+  hour = now.hour(), DEC;
+
   if (hour == feedHour && feedStatus == false) {
     feedStatus = true;
+    lcdSHOW(1, 0, "Kasih Makan!", 1);
+    sendSMS("Kasih Makan!");
+    servoON();
+    buzON();
+    delay(2000);
+    servoOFF();
+    buzOFF();
   }
   if (hour != feedHour && feedStatus == true) {
     feedStatus = false;
   }
 
-  if (feedStatus) {
-    lcd_show(1, 0, "Kasih Makan!", 1);
-    servo_on();
-    send_sms();
-    buzzer_on(2000);
-    servo_off();
+  // program baca isi pakan
+  feedDis = readUltrasonic();
+
+  if (feedDis <= pfeedDis && emptyStatus == false) {
+    emptyStatus = true;
+    lcdSHOW(1, 0, "Pakan Habis!", 1);
+    sendSMS("Pakan Habis!");
+    buzON();
+    delay(1000);
+    buzOFF();
+  }
+  if (feedDis > pfeedDis && emptyStatus == true) {
+    emptyStatus = false;
+  }
+
+  // program baca air keruh dan ph air
+  ldrVal = readLDR();
+  pHVal = readPH();
+
+  if (ldrVal < turbidWater && pHVal > pHWater) {
+    dirtyStatus = false;
+    lcdSHOW(1, 0, "Pakan Habis!", 1);
+  }
+  if ((ldrVal >= turbidWater || pHVal <= pHWater) && (dirtyStatus == true)) {
+    dirtyStatus = true;
+    delay(100);
   }
 }
